@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "vwpCebe1/Uw4IVvhoCEzrsBoA+E=",
+			"path": "github.com/Sirupsen/logrus",
+			"revision": "418b41d23a1bf978c06faea5313ba194650ac088",
+			"revisionTime": "2015-09-08T20:46:18Z"
+		},
+		{
+			"checksumSHA1": "FoOukB4hzckRy4YKnWRL4g3cR8k=",
+			"path": "github.com/alecthomas/template",
+			"revision": "14fd436dd20c3cc65242a9f396b61bfc8a3926fc",
+			"revisionTime": "2015-12-01T00:57:09Z"
+		},
+		{
+			"checksumSHA1": "tL0pxXs1jWzOSnK30Ke+I7sc1CM=",
+			"path": "github.com/parnurzeal/gorequest",
+			"revision": "c4a74a6708c98dafe692472ca01d6390d6d2ab4e",
+			"revisionTime": "2016-03-12T08:54:32Z"
+		},
+		{
+			"checksumSHA1": "QPs8F/aqKAAQJr8dLc3CVQ5SxlM=",
+			"path": "gopkg.in/alecthomas/kingpin.v2",
+			"revision": "8cccfa8eb2e3183254457fb1749b2667fbc364c7",
+			"revisionTime": "2016-02-17T09:03:01Z"
+		}
+	],
+	"rootPath": "github.com/lightcode/reg-clean"
+}
