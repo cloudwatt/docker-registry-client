@@ -11,10 +11,11 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+const applicationVersion = "1.0.0"
+
 var (
 	app = kingpin.New("registry", "A command-line docker registry client.")
 
-	debug       = app.Flag("debug", "Enable debug mode.").Bool()
 	registryURL = app.Flag("registry", "Registry base URL (eg. https://index.docker.io)").Required().OverrideDefaultFromEnvar("REGISTRY").Short('r').URL()
 	username    = app.Flag("username", "Username").OverrideDefaultFromEnvar("REGISTRY_USERNAME").Short('u').String()
 	password    = app.Flag("password", "Password").OverrideDefaultFromEnvar("REGISTRY_PASSWORD").String()
@@ -206,6 +207,8 @@ func deleteTag(repo, ref string) {
 }
 
 func main() {
+	app.Version(applicationVersion)
+
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case cmdTags.FullCommand():
 		listTags(*cmdTagsRepo)
