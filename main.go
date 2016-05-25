@@ -118,8 +118,8 @@ func (r *registry) Tags(repository string) ([]string, error) {
 	}
 
 	res := struct {
-		Name string   `json: "name"`
-		Tags []string `json: "tags"`
+		Name string   `json:"name"`
+		Tags []string `json:"tags"`
 	}{}
 
 	err := json.Unmarshal([]byte(body), &res)
