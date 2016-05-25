@@ -46,11 +46,16 @@ func parseAuthenticateString(v string) map[string]string {
 
 func getToken(realm, scope, service string) (string, []error) {
 	request := gorequest.New()
-	_, body, errs := request.Get(realm).
+
+	q := request.Get(realm).
 		Param("scope", scope).
-		Param("service", service).
-		SetBasicAuth(*username, *password).
-		End()
+		Param("service", service)
+
+	if *username != "" {
+		q.SetBasicAuth(*username, *password)
+	}
+
+	_, body, errs := q.End()
 
 	if errs != nil {
 		return "", errs
