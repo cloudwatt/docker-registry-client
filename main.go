@@ -14,7 +14,7 @@ import (
 const applicationVersion = "1.0.0"
 
 var (
-	app = kingpin.New("registry", "A command-line docker registry client.")
+	app = kingpin.New("docker-registry-client", "A command-line docker registry client.")
 
 	registryURL = app.Flag("registry", "Registry base URL (eg. https://index.docker.io)").Required().OverrideDefaultFromEnvar("REGISTRY").Short('r').URL()
 	username    = app.Flag("username", "Username").OverrideDefaultFromEnvar("REGISTRY_USERNAME").Short('u').String()
