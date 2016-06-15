@@ -28,6 +28,11 @@ var (
 	cmdTagsRepo = cmdTags.Arg("repository", "Repository (eg. namespace/repo)").Required().String()
 )
 
+func init() {
+	// Output log to stderr
+	log.SetOutput(os.Stderr)
+}
+
 func parseAuthenticateString(v string) map[string]string {
 	opts := make(map[string]string)
 	s := strings.SplitN(v, " ", 2)
@@ -176,7 +181,6 @@ func (r *registry) Delete(repository, ref string) error {
 	}
 
 	return nil
-
 }
 
 func listTags(repo string) {
