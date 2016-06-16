@@ -16,6 +16,9 @@ const applicationVersion = "1.0.0"
 var (
 	app = kingpin.New("docker-registry-client", "A command-line docker registry client.")
 
+	debug = app.Flag("debug", "print http headers").Default("false").Bool()
+	curl  = app.Flag("curl", "print http request with curl command").Default("false").Bool()
+
 	registryURL = app.Flag("registry", "Registry base URL (eg. https://index.docker.io)").Required().OverrideDefaultFromEnvar("REGISTRY").Short('r').URL()
 	username    = app.Flag("username", "Username").OverrideDefaultFromEnvar("REGISTRY_USERNAME").Short('u').String()
 	password    = app.Flag("password", "Password").OverrideDefaultFromEnvar("REGISTRY_PASSWORD").String()
@@ -56,6 +59,9 @@ func getToken(realm, scope, service string) (string, []error) {
 		Param("scope", scope).
 		Param("service", service)
 
+	// Eventually enable debug mode/print curl
+	q.SetDebug(*debug).SetCurlCommand(*curl)
+
 	if *username != "" {
 		q.SetBasicAuth(*username, *password)
 	}
@@ -72,6 +78,9 @@ func getToken(realm, scope, service string) (string, []error) {
 }
 
 func execute(s *gorequest.SuperAgent) (gorequest.Response, string, []error) {
+	// Eventually enable debug mode/print curl
+	s.SetDebug(*debug).SetCurlCommand(*curl)
+
 	// Try to execute request directly
 	resp, body, errs := s.End()
 	if errs != nil {
