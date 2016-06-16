@@ -6,12 +6,13 @@ import (
 	"os"
 	"strings"
 
+	"gopkg.in/alecthomas/kingpin.v2"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/parnurzeal/gorequest"
-	"gopkg.in/alecthomas/kingpin.v2"
 )
 
-const applicationVersion = "1.0.0"
+const applicationVersion = "1.0.1"
 
 var (
 	app = kingpin.New("docker-registry-client", "A command-line docker registry client.")
