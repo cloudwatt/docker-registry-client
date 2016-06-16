@@ -15,8 +15,34 @@
 			"revisionTime": "2015-12-01T00:57:09Z"
 		},
 		{
+			"checksumSHA1": "3wt0pTXXeS+S93unwhGoLIyGX/Q=",
+			"path": "github.com/alecthomas/template/parse",
+			"revision": "14fd436dd20c3cc65242a9f396b61bfc8a3926fc",
+			"revisionTime": "2015-12-01T00:57:09Z"
+		},
+		{
+			"checksumSHA1": "fCc3grA7vIxfBru7R3SqjcW+oLI=",
+			"path": "github.com/alecthomas/units",
+			"revision": "2efee857e7cfd4f3d0138cc3cbb1b4966962b93a",
+			"revisionTime": "2015-10-22T06:55:26Z"
+		},
+		{
+			"checksumSHA1": "O7lIX71vTepwRVcnXbV3Fzq0z5U=",
+			"origin": "github.com/parnurzeal/gorequest/vendor/github.com/moul/http2curl",
+			"path": "github.com/moul/http2curl",
+			"revision": "c4a74a6708c98dafe692472ca01d6390d6d2ab4e",
+			"revisionTime": "2016-03-12T08:54:32Z"
+		},
+		{
 			"checksumSHA1": "tL0pxXs1jWzOSnK30Ke+I7sc1CM=",
 			"path": "github.com/parnurzeal/gorequest",
+			"revision": "c4a74a6708c98dafe692472ca01d6390d6d2ab4e",
+			"revisionTime": "2016-03-12T08:54:32Z"
+		},
+		{
+			"checksumSHA1": "uR2JExVr6/6ZrBtvm7XguieokNI=",
+			"origin": "github.com/parnurzeal/gorequest/vendor/golang.org/x/net/publicsuffix",
+			"path": "golang.org/x/net/publicsuffix",
 			"revision": "c4a74a6708c98dafe692472ca01d6390d6d2ab4e",
 			"revisionTime": "2016-03-12T08:54:32Z"
 		},
@@ -27,5 +53,5 @@
 			"revisionTime": "2016-02-17T09:03:01Z"
 		}
 	],
-	"rootPath": "github.com/lightcode/reg-clean"
+	"rootPath": "github.com/lightcode/docker-registry-client"
 }
