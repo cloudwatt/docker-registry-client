@@ -54,7 +54,12 @@ func parseAuthenticateString(v string) map[string]string {
 }
 
 func getToken(realm, scope, service string) (string, []error) {
+
 	request := gorequest.New()
+
+	if os.Getenv("https_proxy") != "" {
+		request.Proxy(os.Getenv("https_proxy"))
+	}
 
 	q := request.Get(realm).
 		Param("scope", scope).
@@ -127,6 +132,11 @@ func (r *registry) Tags(repository string) ([]string, error) {
 	url := fmt.Sprintf("%s/v2/%s/tags/list", r.rootURL, repository)
 
 	request := gorequest.New()
+
+	if os.Getenv("https_proxy") != "" {
+		request.Proxy(os.Getenv("https_proxy"))
+	}
+
 	q := request.Get(url)
 	resp, body, errs := execute(q)
 	if errs != nil {
@@ -154,6 +164,11 @@ func (r *registry) TagDigest(repository, ref string) (string, error) {
 	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.rootURL, repository, ref)
 
 	request := gorequest.New()
+
+	if os.Getenv("https_proxy") != "" {
+		request.Proxy(os.Getenv("https_proxy"))
+	}
+
 	q := request.
 		Get(url).
 		Set("Accept", "application/vnd.docker.distribution.manifest.v2+json")
@@ -179,6 +194,11 @@ func (r *registry) Delete(repository, ref string) error {
 	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.rootURL, repository, ref)
 
 	request := gorequest.New()
+
+	if os.Getenv("https_proxy") != "" {
+		request.Proxy(os.Getenv("https_proxy"))
+	}
+
 	q := request.Delete(url)
 
 	resp, body, errs := execute(q)
