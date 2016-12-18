@@ -12,7 +12,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-const applicationVersion = "1.0.1"
+const applicationVersion = "1.0.2"
 
 var (
 	app = kingpin.New("docker-registry-client", "A command-line docker registry client.")
@@ -53,15 +53,19 @@ func parseAuthenticateString(v string) map[string]string {
 	return opts
 }
 
-func getToken(realm, scope, service string) (string, []error) {
-
+func newRequest() *gorequest.SuperAgent {
 	request := gorequest.New()
 
 	if os.Getenv("https_proxy") != "" {
 		request.Proxy(os.Getenv("https_proxy"))
+	} else if os.Getenv("http_proxy") != "" {
+		request.Proxy(os.Getenv("http_proxy"))
 	}
+	return request
+}
 
-	q := request.Get(realm).
+func getToken(realm, scope, service string) (string, []error) {
+	q := newRequest().Get(realm).
 		Param("scope", scope).
 		Param("service", service)
 
@@ -131,13 +135,7 @@ func newRegistry() *registry {
 func (r *registry) Tags(repository string) ([]string, error) {
 	url := fmt.Sprintf("%s/v2/%s/tags/list", r.rootURL, repository)
 
-	request := gorequest.New()
-
-	if os.Getenv("https_proxy") != "" {
-		request.Proxy(os.Getenv("https_proxy"))
-	}
-
-	q := request.Get(url)
+	q := newRequest().Get(url)
 	resp, body, errs := execute(q)
 	if errs != nil {
 		return nil, fmt.Errorf("%v", errs)
@@ -163,13 +161,7 @@ func (r *registry) Tags(repository string) ([]string, error) {
 func (r *registry) TagDigest(repository, ref string) (string, error) {
 	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.rootURL, repository, ref)
 
-	request := gorequest.New()
-
-	if os.Getenv("https_proxy") != "" {
-		request.Proxy(os.Getenv("https_proxy"))
-	}
-
-	q := request.
+	q := newRequest().
 		Get(url).
 		Set("Accept", "application/vnd.docker.distribution.manifest.v2+json")
 
@@ -193,13 +185,7 @@ func (r *registry) TagDigest(repository, ref string) (string, error) {
 func (r *registry) Delete(repository, ref string) error {
 	url := fmt.Sprintf("%s/v2/%s/manifests/%s", r.rootURL, repository, ref)
 
-	request := gorequest.New()
-
-	if os.Getenv("https_proxy") != "" {
-		request.Proxy(os.Getenv("https_proxy"))
-	}
-
-	q := request.Delete(url)
+	q := newRequest().Delete(url)
 
 	resp, body, errs := execute(q)
 	if errs != nil {
@@ -225,9 +211,7 @@ func listTags(repo string) {
 }
 
 func deleteTag(repo, ref string) {
-	var (
-		err error
-	)
+	var err error
 
 	r := newRegistry()
 
