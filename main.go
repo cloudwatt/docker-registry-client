@@ -30,6 +30,9 @@ var (
 
 	cmdTags     = app.Command("tags", "List tags")
 	cmdTagsRepo = cmdTags.Arg("repository", "Repository (eg. namespace/repo)").Required().String()
+
+	cmdLatest     = app.Command("latest", "Get latest tag")
+	cmdLatestRepo = cmdLatest.Arg("repository", "Repository (eg. namespace/repo)").Required().String()
 )
 
 func init() {
@@ -199,6 +202,16 @@ func (r *registry) Delete(repository, ref string) error {
 	return nil
 }
 
+func checkTagDigest(r *registry, err error, repo string , ref string) (string){
+	if !(len(ref) >= 7 && ref[0:7] == "sha256:") {
+		ref, err = r.TagDigest(repo, ref)
+		if err != nil {
+			log.Fatal("Cannot retreive tag digest", err)
+		}
+	}
+	return ref
+}
+
 func listTags(repo string) {
 	r := newRegistry()
 	tags, err := r.Tags(repo)
@@ -210,17 +223,40 @@ func listTags(repo string) {
 	}
 }
 
+func getLatest(repo string) {
+	var shaLatest string
+	var tagLatest string
+	r := newRegistry()
+	tags, err := r.Tags(repo)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, tag := range tags {
+		if (tag == "latest") {
+			shaLatest = checkTagDigest(r, err, repo, tag)
+			break
+		}
+	}
+
+	for _, tag := range tags {
+		if (shaLatest == checkTagDigest(r, err, repo, tag) && !(tag == "latest")) {
+			tagLatest = tag
+			break
+		}
+	}
+
+	if (len(tagLatest) > 0) {
+		fmt.Printf("%v\n", tagLatest)
+	}
+}
+
 func deleteTag(repo, ref string) {
 	var err error
 
 	r := newRegistry()
 
-	if !(len(ref) >= 7 && ref[0:7] == "sha256:") {
-		ref, err = r.TagDigest(repo, ref)
-		if err != nil {
-			log.Fatal("Cannot retreive tag digest", err)
-		}
-	}
+	ref = checkTagDigest(r, err, repo, ref)
 
 	err = r.Delete(repo, ref)
 	if err != nil {
@@ -235,6 +271,8 @@ func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	case cmdTags.FullCommand():
 		listTags(*cmdTagsRepo)
+	case cmdLatest.FullCommand():
+		getLatest(*cmdLatestRepo)
 	case cmdDelete.FullCommand():
 		deleteTag(*cmdDeleteRepo, *cmdDeleteRef)
 	}
